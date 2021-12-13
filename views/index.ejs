@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary</title>
+    <style> 
+    .form {
+        text-align: center;
+    }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+
+<center>
+  <div class="result" id="result"></div>
+  <form action="/logout?_method=DELETE" method="POST">
+    <button type="submit">Log Out</button>
+  </form>
+</center>
+</div>
+
+    <form>
+        <input type = "text" method="GET" id="Wordbox" placeholder="Enter word here">
+        <button type= "button" class= "btn" onclick= "lookUp()"> Submit </button>
+    </form>
+
+  <script>
+       function lookUp(){    
+            
+            var searchvalue = document.getElementById("Wordbox").value;
+            var word_URL = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/" + searchvalue + "?key=08f82ae4-101a-42dd-abab-d6ed7b7bf70b";
+            var img = document.createElement("img");
+            
+            
+            // inputs the JSON data from the console to the website itself
+            $.ajax({
+                type:"GET",
+                url: word_URL,
+                // url: "https://www.dictionaryapi.com/api/v3/references/collegiate/json/heart?key=08f82ae4-101a-42dd-abab-d6ed7b7bf70b",
+                success:function(response){
+                    console.log('res', response);
+                    document.getElementById("pos").innerHTML = response[0].fl;
+                    document.getElementById("definition").innerHTML = response[0].shortdef[0];
+                    document.getElementById("illustration").innerHTML = response[0].art.artid;
+                    // document.getElementById("definition").innerHTML = response[0].shortdef[0];
+                    $("#illustrations").attr("src", "https://www.merriam-webster.com/assets/mw/static/art/dict/" + response[0].art.artid +".gif");
+                // alert ( response[0].date);
+                    alert ( "https://www.merriam-webster.com/assets/mw/static/art/dict/" + response[0].art.artid +".gif");
+
+                    // var word_pic = "https://www.merriam-webster.com/assets/mw/static/art/dict/" + response[0].art.artid +".gif"
+                    img.src = "https://www.merriam-webster.com/assets/mw/static/art/dict/" + response[0].art.artid +".gif";
+                    var src = document.getElementById('illustration')
+                    src.appendChild(img);
+
+
+
+                // alert ( response[0].art.capt);
+                // alert ( response[0].shortdef[1]);       
+					
+                },  
+            });
+            
+
+
+        
+        
+        };
+  </script>   
+    
+
+
+    <div class="searchResult" id="searchResult">
+        <div>
+            <h1>Parts of Speech</h1>
+            <p id="pos"></p>
+        </div>
+        <div>
+            <h2>Definition</h2>
+            <p id="definition"></p>
+        </div>
+        <div>
+            <h1>Illustration</h1>
+            <img  id="illustration" src="noimage.png" >
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
